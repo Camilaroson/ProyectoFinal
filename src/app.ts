@@ -1,14 +1,14 @@
 //imports
 import express, { Router } from 'express';
-const app = require('express')()
+const app = express()
+var router = express.Router()
+app.use(express.json())
 app.use(express.urlencoded({extended:true}));
-import fs from 'fs';
-import path from 'path';
-app.use(express.json)
+
 
 
 //router
-app.use('/productos', require("./routes/productos"))
+app.use('/productos', require('./routes/productos'))
 
 
 //conexion

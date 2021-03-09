@@ -1,16 +1,14 @@
-import express, { Router } from 'express';
+import express from 'express';
 const app = express()
-const router = Router()
-app.use(express.json())
+var router = express.Router()
 import {NuevoProducto} from '../service/producto.service'
 
 let productos : any [] = []
 
 //mostrar productos
 
-app.get('/', (req,res) => {
-    productos.length < 0 ? res.sendStatus(404) : res.send(productos)
-
+router.get('/', (req,res) => {
+    productos.length >=0 ? res.json(productos) : res.sendStatus(404)
 })
 
 //mostrar producto segun id
@@ -29,12 +27,13 @@ router.post('/',(req,res) =>{
     const producto = new NuevoProducto(id,timestamp,nombre,descripcion,codigo,foto, precio,stock)
     producto.id = productos.length+1
     productos.push(producto)
+    res.sendStatus(201)
     
 })
 
 //modificar un producto
 
-router.put('/:id',(req,res)=>{
+router.patch('/:id',(req,res)=>{
     const id = req.params.id
     const producto = productos.find(producto => producto.id == id)
    if(!producto){
