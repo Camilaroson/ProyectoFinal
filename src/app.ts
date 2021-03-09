@@ -9,9 +9,9 @@ app.use(express.urlencoded({extended:true}));
 
 //router
 app.use('/productos', require('./routes/productos'))
-
+app.use ('/carrito',require('./routes/carrito'))
 
 //conexion
-app.listen(8080 , () =>{
+app.listen(6666 , () =>{
     console.log('Servidor listo!')
 })
