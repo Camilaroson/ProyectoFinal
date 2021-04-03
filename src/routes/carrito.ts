@@ -7,7 +7,7 @@ import {NuevoProducto} from '../service/producto.service'
 
 let carrito : any [] = []
 
-
+let productos : any [] = []
 //mostrar productos del carrito
 
 router.get('/', (req,res) => {
@@ -25,6 +25,19 @@ router.get('/:id',(req,res)=>{
 })
 
 
-//falta incorporar productos al carrito por su id de producto
+// incorporar productos al carrito
+
+router.post('/',(req,res) =>{
+
+    const {id,timestamp,productos} = req.body
+    console.log(req.body);
+    const nuevoCarrito= new Carrito(id,timestamp,productos)
+    nuevoCarrito.id = carrito.length+1
+    carrito.push(nuevoCarrito)
+    res.sendStatus(201)
+
+    
+})
+
 //falta eliminar productos del carrito por su id de producto
 module.exports = router;
