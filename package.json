@@ -6,6 +6,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "express-handlebars": "^5.2.1",
+    "mongoose": "^5.12.3",
     "ts-router": "^0.2.6"
   },
   "devDependencies": {
