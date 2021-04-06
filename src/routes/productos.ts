@@ -11,79 +11,67 @@ let productos : any [] = []
 //mostrar todos los productos
 
 router.get('/', (req,res) => {
-    productos.length >=0 ? res.json(productos) : res.sendStatus(404)
+   productoModel.find({})
+   .then((productos:any) => res.send(productos))
+   .catch((err:any) => res.send(err))
+
 })
 
-//mostrar producto segun NOMBRE
+//mostrar producto segun NOMBRE 
+
 router.get('/:nombre',(req,res)=>{
 
     const nombre = req.params.nombre
       productoModel.findOne( {nombre: nombre} )
-            .then(() => res.send(productos))
+            .then((productos:any) => res.send(productos))
             .catch((err:any) => res.send(err))
 
     })
     
 
-
 //mostrar producto según CODIGO
 
 router.get('/:codigo',(req,res)=>{
-
-    const {codigo} = req.params
-   const productocodigo = productoModel.productos.find({codigo:5})
-   console.log(productocodigo)
-   
-   
-
-
-})
+    const codigo = req.params.codigo
+      productoModel.findOne( {codigo: codigo} )
+            .then((productos:any) => res.send(productos))
+            .catch((err:any) => res.send(err))
+          
+}) 
 
 
 //agregar nuevo producto a la BD
 
 router.post('/',(req,res) =>{
-    const {id,timestamp, nombre,descripcion,codigo,foto,precio,stock} = req.body
-    const producto = new NuevoProducto(id,timestamp,nombre,descripcion,codigo,foto, precio,stock)
-    producto.id = productos.length+1
-    productos.push(producto)
+
+    const producto = req.body
     const saveProducto = new productoModel(producto)
     saveProducto.save()
-    res.send('Creado')
-    
-    
-    
-})
-
-//modificar un producto
-
-router.patch('/:id',(req,res)=>{
-    const id = req.params.id
-    const producto = productos.find(producto => producto.id == id)
-   if(!producto){
-       res.sendStatus(404)
-   }
-   const{nombre,descripcion,foto,precio,stock} = req.body
-   producto.nombre = nombre
-   producto.descripcion = descripcion
-   producto.foto = foto
-   producto.precio = precio
-   producto.stock = stock
-   res.sendStatus(204)
+    .then(() => res.sendStatus(201))
+    .catch((err:any) => res.send(err))
 
 })
 
-//eliminar un producto
+//BUSCAR PRODUCTOS POR RANGO DE PRECIO 
 
-router.delete('/:id',(req,res) =>{
-    const id = req.params.id
-    const producto = productos.find(producto => producto.id == id)
-   if(!producto){
-       res.sendStatus(404)
-   }
-   productos = productos.filter(producto=>producto.id != id)
-   res.sendStatus(204)
+router.get('/:precio',(req,res)=>{
 
+    const precio = req.params.precio
+      productoModel.find({ precio: {$exists:true, $gte:100, $lte:300}})
+            .then((productos:any) => res.send(productos))
+            .catch((err:any) => res.send(err))
+   
+})
+
+//BUSCAR PRODUCTOS POR RANGO DE STOCK 
+
+router.get('/:stock',(req,res)=>{
+
+    const stock = req.params.stock
+      productoModel.find({ stock: {$exists:true, $gte:5, $lte:10}})
+            .then((productos:any) => res.send(productos))
+            .catch((err:any) => res.send(err))          
+   
 })
 
 

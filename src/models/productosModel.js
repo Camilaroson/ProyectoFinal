@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const productoCollection = 'productos'
 
 const productoSchema = new mongoose.Schema({
-id: {type:Number, require:true},
 timestamp:{type:Date,require:true},
 nombre: {type:String , require:true , max:150},
 descripcion: {type:String , require:true , max:200},
